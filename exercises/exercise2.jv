@@ -37,8 +37,23 @@ pipeline FuerthPipeline{
         table: "trees";
         file: "./trees.sqlite";
     }
+}
 
 // only include Fuerth-relevant
 valuetype Furth oftype text{
-    constraints:[StartWithFurthOnly];
+    constraints:[StartWithFuerthOnly];
 }
+
+constraint StartWithFuerthOnly on text:
+    value matches /^Furth-\w+/;
+
+
+// only include with valid coordinates
+valuetype id oftype text {
+    constraints: [
+       ValidCoordinate,
+    ];
+}
+
+constraint ValidCoordinate on text:
+    value matches /\{\w{1,3}\.\w+\}, \{\w{1,3}\.\w+\}/;
