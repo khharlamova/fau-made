@@ -1,1 +1,44 @@
+pipeline FuerthPipeline{
+    FuerthExtractor -> FuerthTextFileInterpreter -> FuerthCSVInterpreter -> FuerthColumnDeleter -> FuerthTableInterpreter -> FuerthLoader;
+    
+    block FuerthExtractor oftype HttpExtractor {
+        url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv";
+    }
 
+    block FuerthTextFileInterpreter oftype TextFileInterpreter {}
+
+    // interpret the text file as sheet
+    block FuerthCSVInterpreter oftype CSVInterpreter {
+        delimiter: ";";
+    }
+
+    // delete the "baumart_deutsch" column as per task
+    block FuerthColumnDeleter oftype ColumnDeleter
+    {
+        delete: [column E];
+    }
+
+    // interpret the sheet as a table by adding structure
+    block FuerthTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "lfd_nr" oftype integer,
+            "stadtteil" oftype Furth,
+            "standort" oftype text,
+            "baumart_botanisch" oftype text,
+            "baumart_deutsch" oftype text,
+            "id" oftype id,
+            "baumfamilie" oftype text
+        ];
+    }
+
+    // load the table into a sink, here into a sqlite file
+    block FuerthLoader oftype SQLiteLoader {
+        table: "trees";
+        file: "./trees.sqlite";
+    }
+
+// only include Fuerth-relevant
+valuetype Furth oftype text{
+    constraints:[StartWithFurthOnly];
+}
