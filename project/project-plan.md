@@ -35,6 +35,28 @@ This project explores the relationship between CO2 emissions from various sector
 ## Work Packages
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
+1. **Issue #1: Data Collection and Preparation**
+   - Download data from lustat.statec.lu for the relevant years and sectors.
+   - Clean and preprocess the data to ensure accuracy and readiness for analysis.
+   - Align the air quality data with the CO2 emissions data based on the time period and geographic relevance.
+
+2. **Issue #2: Exploratory Data Analysis (EDA)**
+   - Conduct preliminary analysis to understand the distribution and trends of both CO2 emissions and air pollutant levels.
+   - Use visualizations to identify patterns and outliers in the datasets.
+
+3. **Issue #3: Statistical Analysis and Modeling**
+   - Employ regression analysis to determine the relationships between sector-specific CO2 emissions and various air pollutants.
+   - Analyze the impact of seasonal variations and control for external factors such as weather conditions.
+
+4. **Issue #4: Policy Impact Analysis**
+   - Evaluate how current environmental policies are affecting sector-specific emissions and air quality.
+   - Assess the effectiveness of existing regulations and identify sectors where further intervention is needed.
+
+5. **Issue #5: Report Writing and Recommendations**
+   - Compile the findings into a comprehensive report detailing the analysis, results, and methodological approaches.
+   - Formulate policy recommendations based on the data to help local governments and environmental agencies target the most harmful sectors.
+
+
 
 1. Example Issue [#1][i1]
 2. ...
