@@ -2,12 +2,12 @@
 
 ## Title
 <!-- Give your project a short title. -->
-Awesome MADE project.
+Impact of Sector-Specific CO2 Emissions on Urban Air Quality
 
 ## Main Question
 
 <!-- Think about one main question you want to answer based on the data. -->
-1. Does writing an example question help students write better project plans?
+How do sector-specific CO2 emissions from energy combustion influence urban air quality indicators?
 
 ## Description
 
