@@ -19,7 +19,7 @@ This project explores the relationship between CO2 emissions from various sector
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
 ### 1. Quarterly CO2 Emissions from Energy Combustion
-* Metadata URL: 
+* Metadata URL: https://lustat.statec.lu/vis?lc=en&df[ds]=ds-release&df[id]=DF_A3200&df[ag]=LU1&df[vs]=1.1&pd=2015%2C2022&dq=A..&ly[rw]=SPECIFICATION%2CEU_NORM&ly[cl]=TIME_PERIOD&tm=Air%20quality&pg=0&vw=ov
 * Data URL: https://lustat.statec.lu/vis?df[ds]=ds-release&df[id]=DF_A3207&df[ag]=LU1&df[vs]=1.0&lc=en&tm=Quarterly%20CO2%20emissions%20from%20energy%20combustion&pg=0&hc[dimensions]=Emissions&hc[Frequency]=Quarterly
 * Data Type: CSV
 
