@@ -19,17 +19,19 @@ This project explores the relationship between CO2 emissions from various sector
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
 ### 1. Quarterly CO2 Emissions from Energy Combustion
-* Metadata URL: https://lustat.statec.lu/vis?df[ds]=ds-release&df[id]=DF_A3207&df[ag]=LU1&df[vs]=1.0&vw=tb&pd=2015-Q1%2C2022-Q4&dq=.Q&ly[rw]=TIME_PERIOD&ly[cl]=EMISSIONS&lc=en&tm=Quarterly%20CO2%20emissions%20from%20energy%20combustion&pg=0&hc[dimensions]=Emissions&hc[Frequency]=Quarterly
-* Data URL:
+* Metadata URL: 
+* Data URL: https://lustat.statec.lu/vis?df[ds]=ds-release&df[id]=DF_A3207&df[ag]=LU1&df[vs]=1.0&lc=en&tm=Quarterly%20CO2%20emissions%20from%20energy%20combustion&pg=0&hc[dimensions]=Emissions&hc[Frequency]=Quarterly
 * Data Type: CSV
-* Short description: Contains detailed data on CO2 emissions broken down by sectors such as road transport, air transport, and others, enabling the analysis of sector-specific impacts on air quality.
+
+Contains detailed data on CO2 emissions broken down by sectors such as road transport, air transport, and others, enabling the analysis of sector-specific impacts on air quality.
 
 
 ### 2. Annual Air Quality Data
-* Metadata URL: https://lustat.statec.lu/vis?lc=en&df[ds]=ds-release&df[id]=DF_A3200&df[ag]=LU1&df[vs]=1.1&pd=2015%2C2022&dq=A..&ly[rw]=SPECIFICATION%2CEU_NORM&ly[cl]=TIME_PERIOD&tm=Air%20quality&pg=0
-* Data URL: 
+* Metadata URL: 
+* Data URL: https://lustat.statec.lu/vis?lc=en&df[ds]=ds-release&df[id]=DF_A3200&df[ag]=LU1&df[vs]=1.1&tm=Air%20quality&pg=0
 * Data Type: CSV
-* Short description: Provides annual measurements of urban air pollutants, including sulfur dioxide, nitrogen oxides, and particulate matter, crucial for assessing the environmental impact of CO2 emissions.
+
+Provides annual measurements of urban air pollutants, including sulfur dioxide, nitrogen oxides, and particulate matter, crucial for assessing the environmental impact of CO2 emissions.
 
 
 ## Work Packages
