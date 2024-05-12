@@ -37,30 +37,23 @@ Provides annual measurements of urban air pollutants, including sulfur dioxide, 
 ## Work Packages
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
-1. **Issue #1: Data Collection and Preparation**
-   - Download data from lustat.statec.lu for the relevant years and sectors.
-   - Clean and preprocess the data to ensure accuracy and readiness for analysis.
-   - Align the air quality data with the CO2 emissions data based on the time period and frequency (quarterly/annually).
+1. **Issue #1: Data Collection and Preparation** [#1][i1]
 
-2. **Issue #2: Exploratory Data Analysis (EDA)**
-   - Conduct preliminary analysis to understand the distribution and trends of both CO2 emissions and air pollutant levels.
-   - Use visualizations to identify patterns and outliers in the datasets.
+2. **Issue #2: Exploratory Data Analysis (EDA)** [#2][i2]
 
-3. **Issue #3: Statistical Analysis and Modeling**
-   - Employ regression analysis to determine the relationships between sector-specific CO2 emissions and various air pollutants.
-   - Analyze the impact of seasonal variations and control for external factors such as weather conditions.
+3. **Issue #3: Statistical Analysis and Modeling** [#3][i3]
 
-4. **Issue #4: Policy Impact Analysis**
-   - Evaluate how current environmental policies are affecting sector-specific emissions and air quality.
-   - Assess the effectiveness of existing regulations and identify sectors where further intervention is needed.
+4. **Issue #4: Policy Impact Analysis** [#4][i4]
 
-5. **Issue #5: Report Writing and Recommendations**
-   - Compile the findings into a comprehensive report detailing the analysis, results, and methodological approaches.
-   - Formulate policy recommendations based on the data to help local governments and environmental agencies target the most harmful sectors.
+5. **Issue #5: Report Writing and Recommendations** [#5][i5]
+  
+
+[i1]: https://github.com/khharlamova/fau-made/issues/1
+[i2]: https://github.com/khharlamova/fau-made/issues/2
+[i3]: https://github.com/khharlamova/fau-made/issues/3
+[i4]: https://github.com/khharlamova/fau-made/issues/4
+[i5]: https://github.com/khharlamova/fau-made/issues/5
 
 
 
-1. Example Issue [#1][i1]
-2. ...
 
-[i1]: https://github.com/jvalue/made-template/issues/1
