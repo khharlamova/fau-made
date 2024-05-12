@@ -40,7 +40,7 @@ Provides annual measurements of urban air pollutants, including sulfur dioxide, 
 1. **Issue #1: Data Collection and Preparation**
    - Download data from lustat.statec.lu for the relevant years and sectors.
    - Clean and preprocess the data to ensure accuracy and readiness for analysis.
-   - Align the air quality data with the CO2 emissions data based on the time period and geographic relevance.
+   - Align the air quality data with the CO2 emissions data based on the time period and frequency (quarterly/annually).
 
 2. **Issue #2: Exploratory Data Analysis (EDA)**
    - Conduct preliminary analysis to understand the distribution and trends of both CO2 emissions and air pollutant levels.
