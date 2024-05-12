@@ -28,7 +28,7 @@ Contains detailed data on CO2 emissions broken down by sectors such as road tran
 
 ### 2. Annual Air Quality Data
 * Metadata URL: https://lustat.statec.lu/vis?lc=en&df[ds]=ds-release&df[id]=DF_A3200&df[ag]=LU1&df[vs]=1.1&pd=2015%2C2022&dq=A..&ly[rw]=SPECIFICATION%2CEU_NORM&ly[cl]=TIME_PERIOD&tm=Air%20quality&pg=0&vw=ov
-* Data URL: [https://lustat.statec.lu/vis?lc=en&df[ds]=ds-release&df[id]=DF_A3200&df[ag]=LU1&df[vs]=1.1&tm=Air%20quality&pg=0](https://lustat.statec.lu/vis?lc=en&df[ds]=ds-release&df[id]=DF_A3200&df[ag]=LU1&df[vs]=1.1&tm=Air%20quality&pg=0&pd=2015%2C2022&dq=A..&ly[rw]=SPECIFICATION%2CEU_NORM&ly[cl]=TIME_PERIOD)
+* Data URL: https://lustat.statec.lu/vis?lc=en&df[ds]=ds-release&df[id]=DF_A3200&df[ag]=LU1&df[vs]=1.1&tm=Air%20quality&pg=0&pd=2015%2C2022&dq=A..&ly[rw]=SPECIFICATION%2CEU_NORM&ly[cl]=TIME_PERIOD
 * Data Type: CSV
 
 Provides annual measurements of urban air pollutants, including sulfur dioxide, nitrogen oxides, and particulate matter, crucial for assessing the environmental impact of CO2 emissions.
