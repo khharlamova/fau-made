@@ -15,6 +15,8 @@ def transform_co2_data(file_path, db_path):
     df = pd.read_csv(file_path)
     
     # Drop unnecessary columns and rows
+    columns_to_drop = [0, 2, 7]
+    columns_to_drop = [col for col in columns_to_drop if col < len(df.columns)]
     df = df.drop(df.columns[[0, 2, 7]], axis=1)
     rows_to_drop = [0, 1, 2, 3, 9, 14, 19, 24, 29, 30]
     rows_to_drop = [row for row in rows_to_drop if row < len(df)]
