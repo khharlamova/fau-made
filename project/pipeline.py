@@ -7,7 +7,7 @@ co2_file_path = "/project/co2-emissions.csv"
 air_quality_file_path = "/project/air-quality.csv"
 
 # Define output directory
-output_dir = "/project/data"
+output_dir = "/data"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
