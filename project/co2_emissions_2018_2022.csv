@@ -1,0 +1,97 @@
+DATAFLOW,EMISSIONS: Emissions,FREQ: Frequency,TIME_PERIOD: Time period,OBS_VALUE,NOTE_EMISSIONS_2: Note Emissions 2,NOTE_EMISSIONS_1: Note Emissions 1,NOTE_QUARTER_2: Note quarter 2,NOTE_QUARTER_1: Note quarter 1,OBS_STATUS: Observation status,DECIMALS: Decimals
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2018-Q1,439626,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2018-Q2,460794,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2018-Q3,454396,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2018-Q4,484255,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2019,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2019-Q1,435659.3269825,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2019-Q2,464151.4871175,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2019-Q3,470316.659735,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2019-Q4,428573.717725,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2020,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2020-Q1,374056.6791775,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2020-Q2,411324.0918225,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2020-Q3,412926.3760325,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2020-Q4,438526.519145,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2021,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2021-Q1,409979.92947,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2021-Q2,446832.0956525,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2021-Q3,486625.15274,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2021-Q4,524173.58318,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2022,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2022-Q1,463082.2895675,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2022-Q2,489882.9086825,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2022-Q3,496936.661655,,,,,,0: Zero
+LU1:DF_A3207(1.0),A03: Air transport,Q: Quarterly,2022-Q4,488605.05981,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2018-Q1,1507601,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2018-Q2,1665337,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2018-Q3,1668785,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2018-Q4,1720105,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2019,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2019-Q1,1638835.61640942,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2019-Q2,1736688.46462468,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2019-Q3,1712176.71874996,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2019-Q4,1635579.82110381,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2020,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2020-Q1,1418897.84984286,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2020-Q2,1062493.1483425,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2020-Q3,1500642.43126123,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2020-Q4,1335840.51531762,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2021,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2021-Q1,1238399.4017944,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2021-Q2,1370059.47609913,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2021-Q3,1518562.18250571,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2021-Q4,1420019.64757339,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2022,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2022-Q1,1339113.39265012,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2022-Q2,1287182.46263951,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2022-Q3,1165812.93439742,,,,,,0: Zero
+LU1:DF_A3207(1.0),A02: Road transport,Q: Quarterly,2022-Q4,1124004.95270121,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2018-Q1,2936292,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2018-Q2,2640264,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2018-Q3,2565993,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2018-Q4,3050434,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2019,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2019-Q1,3025535.55093923,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2019-Q2,2779015.41106591,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2019-Q3,2642667.13310198,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2019-Q4,2873271.6873685,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2020,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2020-Q1,2745168.21477673,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2020-Q2,1985417.46240229,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2020-Q3,2308439.07511576,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2020-Q4,2568625.35052774,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2021,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2021-Q1,2559721.9379905,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2021-Q2,2416656.12069854,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2021-Q3,2406500.9063276,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2021-Q4,2779445.11554957,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2022,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2022-Q1,2666314.1637265,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2022-Q2,2224785.67985593,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2022-Q3,2057129.43599832,,,,,,0: Zero
+LU1:DF_A3207(1.0),A01: Total,Q: Quarterly,2022-Q4,2178319.68907124,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2018-Q1,989065,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2018-Q2,514133,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2018-Q3,442812,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2018-Q4,846074,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2019,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2019-Q1,951040.60754731,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2019-Q2,578175.45932373,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2019-Q3,460173.75461702,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2019-Q4,809118.14853969,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2020,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2020-Q1,952213.68575637,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2020-Q2,511600.22223729,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2020-Q3,394870.26782203,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2020-Q4,794258.31606512,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2021,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2021-Q1,911342.606726095,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2021-Q2,599764.54894692,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2021-Q3,401313.57108189,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2021-Q4,835251.88479618,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2022,,,,,,l: Not available,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2022-Q1,864118.481508885,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2022-Q2,447720.30853392,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2022-Q3,394379.839945905,,,,,,0: Zero
+LU1:DF_A3207(1.0),A04: Others,Q: Quarterly,2022-Q4,565709.676560025,,,,,,0: Zero

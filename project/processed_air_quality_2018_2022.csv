@@ -1,0 +1,16 @@
+Type_of_Pollution,EU_Norm,2018,2019,2020,2021,2022
+SL01: sulphur dioxide (SO2) (in µg/m³),SL01: 350,30.0,52.7,26.0,28.0,15.0
+SL02: nitrogen dioxide (NO2) (in µg/m³),SL02: 40,42.0,44.0,35.0,34.0,36.0
+"SL03: nitrogen oxides (NOx=NO+NO2, in rural area) (in µg/m³)",SL03: 30,16.0,16.0,13.0,11.0,13.0
+SL04: ozone (O3) (in µg/m³),SL04: -,220.0,207.0,172.0,164.0,169.0
+SL05: carbon monoxide (CO) (in µg/m³),SL05: 10000,999.0,1101.0,980.0,1081.0,916.0
+SL06: benzene (C6H6) (in µg/m³),SL06: 5,0.4,0.4,0.6,0.8,0.7
+"SL07: particulate matter (PM2.5, <2.5 µm) (in µg/m³)",SL07: 25,9.0,7.0,9.0,7.0,7.0
+"SL08: particulate matter (PM10, <10 µm) (in µg/m³)",SL08: 40,21.0,21.0,27.0,19.0,20.0
+"SL09: particulate matter (PM10, <10 µm) (in µg/m³)",SL09: 50,78.0,66.0,90.0,90.0,78.0
+"SL10: particulate matter (PM10, <10 µm) (in days)",SL10: 35,8.0,5.0,7.0,8.0,9.0
+SL11: lead (Pb) (in µg/m³),SL11: 0.5,0.023,0.025,0.012,0.018,0.015
+SL12: arsenic (As) (in ng/m³),SL12: 6,3.6,3.9,0.7,0.7,0.7
+SL13: cadmium (Cd) (in ng/m³),SL13: 5,0.4,0.3,0.3,0.3,0.3
+SL14: nickel (Ni) (in ng/m³),SL14: 20,9.4,11.3,3.2,2.2,2.5
+SL15: benzo(a)pyrene (BaP) (in ng/m³),SL15: 1,0.3,0.2,0.2,0.2,0.2
