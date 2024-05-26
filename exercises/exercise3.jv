@@ -7,7 +7,7 @@ pipeline GoodsPipeline{
     
     // ensure German umlauts are saved correctly
     block GoodsTextFileInterpreter oftype TextFileInterpreter {
-        encoding: "lati3";
+        encoding: "latin3";
     }
 
     // remove metadata rows, data starts in row 9
@@ -42,12 +42,6 @@ pipeline GoodsPipeline{
         ];
     }
 
-    // load the table into a sink, here into a sqlite file
-    block GoodsLoader oftype SQLiteLoader {
-        table: "goods";
-        file: "./goodsTransportedByTrain.sqlite";
-    }
-}
 
 // numeric values must be positive integers
 valuetype Numeric oftype integer {
@@ -73,4 +67,11 @@ valuetype GoodsId oftype text {
 
 constraint GoodsIdConstraint oftype RegexConstraint {
     regex: /^NST7-([A-Z0-9]{3})$/;
+}
+
+    // load the table into a sink, here into a sqlite file
+    block GoodsLoader oftype SQLiteLoader {
+        table: "goods";
+        file: "./goodsTransportedByTrain.sqlite";
+    }
 }
