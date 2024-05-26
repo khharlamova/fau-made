@@ -1,73 +1,90 @@
-import os
+import requests
 import pandas as pd
-import sqlite3
+import os
 
-# Define input file paths
-co2_file_path = "/project/co2-emissions.csv"
-air_quality_file_path = "/project/air-quality.csv"
+api_url_1 = "https://lustat.statec.lu/rest/data/LU1,DF_A3207,1.0/.Q?startPeriod=2018-Q1&endPeriod=2022-Q4"
+api_url_2 = "https://lustat.statec.lu/rest/data/LU1,DF_A3200,1.1/A..?startPeriod=2018&endPeriod=2022"
 
-# Define output directory
-output_dir = "/data"
+output_dir = os.path.expanduser("~/data")
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-def transform_co2_data(file_path, db_path):
+file_path_1 = os.path.join(output_dir, "co2_emissions_2018_2022.csv")
+file_path_2 = os.path.join(output_dir, "air_quality_2018_2022.csv")
+
+def download_csv(api_url, file_path):
+    headers = {
+        'Accept': 'application/vnd.sdmx.data+csv;urn=true;file=true;labels=both'
+    }
+    response = requests.get(api_url, headers=headers)
+    response.raise_for_status()  # Check if the request was successful
+    
+    with open(file_path, 'wb') as file:
+        file.write(response.content)
+    print(f"Data has been downloaded to {file_path}")
+
+def process_emissions_data(file_path, output_path):
     df = pd.read_csv(file_path)
     
-    # Drop unnecessary columns and rows
-    columns_to_drop = [0, 2, 7]
-    columns_to_drop = [col for col in columns_to_drop if col < len(df.columns)]
-    df = df.drop(df.columns[[0, 2, 7]], axis=1)
-    rows_to_drop = [0, 1, 2, 3, 9, 14, 19, 24, 29, 30]
-    rows_to_drop = [row for row in rows_to_drop if row < len(df)]
-    df = df.drop(rows_to_drop, axis=0).reset_index(drop=True)
+    # Split the 'DATAFLOW' column to extract relevant information, handling missing parts
+    dataflow_split = df['DATAFLOW'].str.split(':', expand=True)
+    dataflow_split = dataflow_split.reindex(columns=range(3), fill_value=None)
+    df[['Region', 'Dataset', 'Version']] = dataflow_split
+    df[['Dataset', 'Version']] = df['Dataset'].str.split('(', expand=True)
+    df['Version'] = df['Version'].str.rstrip(')')
     
-    # Add new header row
-    new_row = pd.DataFrame([["Time period", "Total emissions", "Road transport", "Air transport", "Others"]], columns=df.columns)
-    df = pd.concat([new_row, df], ignore_index=True)
+    # Split the 'EMISSIONS' column to extract emission types
+    df[['Emission_Type', 'Emission_Type_Desc']] = df['EMISSIONS: Emissions'].str.split(': ', expand=True)
     
-    # Replace with new data
-    conn = sqlite3.connect(db_path)
-    df.to_sql('co2_emissions', conn, if_exists='replace', index=False)
-    conn.close()
+    # Organize and structure
+    df = df[['Emission_Type_Desc', 'TIME_PERIOD: Time period', 'OBS_VALUE']]
+    df_pivot = df.pivot(index='TIME_PERIOD: Time period', columns='Emission_Type_Desc', values='OBS_VALUE').reset_index()
+    df_pivot.columns = ['Time_Period', 'Air transport', 'Others', 'Road transport', 'Total']
+    df_pivot = df_pivot[['Time_Period', 'Total', 'Road transport', 'Air transport', 'Others']]
     
-    return df
+    # Calculate annual totals for 2018-2022, inserting info to the rows 2019-2022 and adding one more row for 2018
+    df_pivot['Year'] = df_pivot['Time_Period'].str[:4]
+    annual_totals = df_pivot.groupby('Year').sum().reset_index()
+    total_2018 = annual_totals[annual_totals['Year'] == '2018']
+    df_pivot = pd.concat([df_pivot, total_2018.assign(Time_Period='2018')])
+    for year in range(2019, 2023):
+        total_row = annual_totals[annual_totals['Year'] == str(year)]
+        df_pivot.loc[df_pivot['Time_Period'] == str(year), ['Total', 'Road transport', 'Air transport', 'Others']] = total_row[['Total', 'Road transport', 'Air transport', 'Others']].values
+    
+    # Drop the 'Year' column
+    df_pivot = df_pivot.drop(columns=['Year'])
+    
+    # Sort by Time_Period and save the processed DataFrame to a new CSV file
+    df_pivot = df_pivot.sort_values(by='Time_Period').reset_index(drop=True)
+    df_pivot.to_csv(output_path, index=False)
+    print(f"Processed data has been saved to {output_path}")
 
-def transform_air_quality_data(file_path, db_path):
-    df = pd.read_csv(file_path, skiprows=2)
+def process_air_quality_data(file_path, output_path):
+    df = pd.read_csv(file_path)
     
-    # Drop unnecessary columns and rows
-    columns_to_drop = [0, 3, 9]
-    columns_to_drop = [col for col in columns_to_drop if col < len(df.columns)]
-    df = df.drop(df.columns[columns_to_drop], axis=1)
-    rows_to_drop = [0, 1, 2, 21, 22]
-    rows_to_drop = [row for row in rows_to_drop if row < len(df)]
-    df = df.drop(rows_to_drop, axis=0).reset_index(drop=True)
+    # Organize and structure
+    df.columns = df.columns.str.strip()
+    df = df[['SPECIFICATION: Specification', 'EU_NORM: EU Norm', 'TIME_PERIOD: Time period', 'OBS_VALUE']]
+    df.columns = ['Type_of_Pollution', 'EU_Norm', 'Year', 'Value']
+    df_pivot = df.pivot_table(index=['Type_of_Pollution', 'EU_Norm'], columns='Year', values='Value', aggfunc='first').reset_index()
+    df_pivot.columns = [str(col) if isinstance(col, int) else col for col in df_pivot.columns]
+    df_pivot = df_pivot[['Type_of_Pollution', 'EU_Norm', '2018', '2019', '2020', '2021', '2022']]
     
-    # Add new header row
-    new_row = pd.DataFrame([["Pollution", "EU Norm", "2018", "2019", "2020", "2021", "2022"]], columns=df.columns)
-    df = pd.concat([new_row, df], ignore_index=True)
-    
-    # Replace with new data
-    conn = sqlite3.connect(db_path)
-    df.to_sql('air_quality', conn, if_exists='replace', index=False)
-    conn.close()
-    
-    return df
-
-def save_to_sqlite(df, db_name, table_name):
-    conn = sqlite3.connect(db_name)
-    df.to_sql(table_name, conn, if_exists='replace', index=False)
-    conn.close()
+    # Save the processed DataFrame to a new CSV file
+    df_pivot.to_csv(output_path, index=False)
+    print(f"Processed data has been saved to {output_path}")
 
 def main():
-    # Transform datasets
-    co2_df = transform_co2_data(co2_file_path, os.path.join(output_dir, "co2_emissions.db"))
-    air_quality_df = transform_air_quality_data(air_quality_file_path, os.path.join(output_dir, "air_quality.db"))
+    # Download datasets
+    download_csv(api_url_1, file_path_1)
+    download_csv(api_url_2, file_path_2)
     
-    # Save datasets to SQLite databases
-    save_to_sqlite(co2_df, os.path.join(output_dir, "co2_emissions.db"), "co2_emissions")
-    save_to_sqlite(air_quality_df, os.path.join(output_dir, "air_quality.db"), "air_quality")
+    # Process the downloaded data
+    processed_file_path_1 = os.path.join(output_dir, "processed_co2_emissions_2018_2022.csv")
+    processed_file_path_2 = os.path.join(output_dir, "processed_air_quality_2018_2022.csv")
+    
+    process_emissions_data(file_path_1, processed_file_path_1)
+    process_air_quality_data(file_path_2, processed_file_path_2)
 
 if __name__ == "__main__":
     main()
