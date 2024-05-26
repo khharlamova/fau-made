@@ -44,7 +44,7 @@ pipeline GoodsPipeline{
     // load the table into a sink, here into a sqlite file
     block GoodsLoader oftype SQLiteLoader {
         table: "goods";
-        file: "./goodsTransportedByTrain.sqlite";
+        file: "goodsTransportedByTrain.sqlite";
     }
 }
 
