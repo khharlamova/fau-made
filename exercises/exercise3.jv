@@ -3,16 +3,17 @@ pipeline GoodsPipeline{
 
     block GoodsExtractor oftype HttpExtractor {
         url:"https://www-genesis.destatis.de/genesis/downloads/00/tables/46131-0014_00.csv";
+        retries: 3;
     }
     
     // ensure German umlauts are saved correctly
     block GoodsTextFileInterpreter oftype TextFileInterpreter {
-        encoding:"latin2";
+        encoding: "lati3";
     }
 
     // remove metadata rows, data starts in row 9
     block GoodsTextRangeSelector oftype TextRangeSelector {
-        lineFrom:9;
+        lineFrom: 9;
     }
 
     // select only a subset of columns, add header names for the first columns A-E
