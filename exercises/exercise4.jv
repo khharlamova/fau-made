@@ -1,5 +1,5 @@
 pipeline BatterietemperaturPipeline {
-    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> RenameTemperaturCellWriter -> RenameTemperaturBatteryCellWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> RenameTemperaturCellWriter -> RenameTemperaturBatteryCellWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
 
     // extracting data from the URL
     block BatterietemperaturDownloader oftype HttpExtractor {
@@ -18,7 +18,7 @@ pipeline BatterietemperaturPipeline {
 
     // interpret the file as a text file
     block BatterietemperaturFileInterpreter oftype TextFileInterpreter {
-        encoding: "utf8";  // correct encoding value
+        encoding: "utf8"; 
     }
 
     // interpret the file as a CSV
@@ -52,24 +52,12 @@ pipeline BatterietemperaturPipeline {
         ];
     }
 
-    // convert temperatures from Celsius to Fahrenheit
-    block BatterietemperaturTempConverter1 oftype TableTransformer {
-        inputColumns: ['temperature'];
-        outputColumn: 'temperature';
-        use: CelsiusToFahrenheit;
-    }
-
-    block BatterietemperaturTempConverter2 oftype TableTransformer {
-        inputColumns: ['battery_temperature'];
-        outputColumn: 'battery_temperature';
-        use: CelsiusToFahrenheit;
-    }
-
     // load the table into a sink, here into an SQLite file
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
         file: "./temperatures.sqlite";
     }
+}
 
     // numeric values for 'id' must be positive integers
     valuetype ValidGeraetNumber oftype integer {
@@ -77,13 +65,6 @@ pipeline BatterietemperaturPipeline {
     }
 
     constraint PositiveIntegerConstraint {
-        value: "> 0";
+        value > 0;
     }
 
-    // transform Celsius to Fahrenheit
-    transform CelsiusToFahrenheit {
-        from Celsius oftype decimal;
-        to Fahrenheit oftype decimal;
-        Fahrenheit: (Celsius * 9/5) + 32;
-    }
-}
