@@ -23,6 +23,12 @@ def download_csv(api_url, file_path):
         file.write(response.content)
     print(f"Data has been downloaded to {file_path}")
 
+def validate_data(file_path):
+    df = pd.read_csv(file_path)
+    if df.empty:
+        raise ValueError(f"No data found in {file_path}") # Data check
+    print(f"Data validation passed for {file_path}")
+
 def process_emissions_data(file_path, output_path):
     df = pd.read_csv(file_path)
     
