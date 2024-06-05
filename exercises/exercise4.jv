@@ -1,25 +1,29 @@
 pipeline BatterietemperaturPipeline {
-    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturCSVInterpreter -> BatterietemperaturColumnSelector -> BatterietemperaturColumnRenamer -> BatterietemperaturConverter -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturCSVInterpreter -> BatterietemperaturColumnSelector -> BatterietemperaturColumnRenamer -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
 
+    // Extracting data from the URL and unzips it into a Filesystem
     block BatterietemperaturDownloader oftype HttpExtractor {
         url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
     }
 
+    // Unzip the downloaded file
     block BatterietemperaturUnzipper oftype ZipExtractor {
         file: "./mowesta-dataset-20221107.zip";
         outputDirectory: "./unzipped";
     }
 
+    // Interpret the File as a CSV
     block BatterietemperaturCSVInterpreter oftype CSVInterpreter {
         file: "./unzipped/data.csv";
-        delimiter: ",";
-        enclosing: '';
+        delimiter: ";";
     }
 
+    // Select the required columns
     block BatterietemperaturColumnSelector oftype ColumnSelector {
         columns: ["Geraet", "Hersteller", "Model", "Monat", "Temperatur in °C (DWD)", "Batterietemperatur in °C"];
     }
 
+    // Rename the columns
     block BatterietemperaturColumnRenamer oftype ColumnRenamer {
         mappings: {
             "Geraet": "id",
@@ -31,12 +35,18 @@ pipeline BatterietemperaturPipeline {
         };
     }
 
-    block BatterietemperaturConverter oftype ColumnTransformer {
+    // Convert temperatures from Celsius to Fahrenheit
+    block BatterietemperaturTempConverter1 oftype ColumnTransformer {
         transformations: [
             {
                 column: "temperature",
                 formula: "(temperature * 9/5) + 32"
-            },
+            }
+        ];
+    }
+    
+    block BatterietemperaturTempConverter2 oftype ColumnTransformer {
+        transformations: [
             {
                 column: "battery_temperature",
                 formula: "(battery_temperature * 9/5) + 32"
@@ -44,6 +54,7 @@ pipeline BatterietemperaturPipeline {
         ];
     }
 
+    // Interpret the data as a table with the appropriate types
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
@@ -56,13 +67,14 @@ pipeline BatterietemperaturPipeline {
         ];
     }
 
+    // Load the transformed data into an SQLite database
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
         databaseFile: "./temperatures.sqlite";
     }
 }
 
-// numeric values for 'id' must be positive integers
+// Numeric values for 'id' must be positive integers
 valuetype BigInt oftype integer {
     constraints: [PositiveIntegerConstraint];
 }
@@ -70,5 +82,6 @@ valuetype BigInt oftype integer {
 constraint PositiveIntegerConstraint on integer {
     value > 0;
 }
+
 
 
