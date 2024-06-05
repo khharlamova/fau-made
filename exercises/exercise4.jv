@@ -1,7 +1,7 @@
 pipeline BatterietemperaturPipeline {
-    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturCellWriter1 -> BatterietemperaturBatteryCellWriter2 -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> RenameTemperaturCellWriter -> RenameTemperaturBatteryCellWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
 
-    // extracting data from the url
+    // extracting data from the URL
     block BatterietemperaturDownloader oftype HttpExtractor {
         url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
     }
@@ -18,22 +18,22 @@ pipeline BatterietemperaturPipeline {
 
     // interpret the file as a text file
     block BatterietemperaturFileInterpreter oftype TextFileInterpreter {
-        encoding: "utf8";  
+        encoding: "utf8";  // correct encoding value
     }
 
-    // interpret the file as a csv
+    // interpret the file as a CSV
     block BatterietemperaturCSVInterpreter oftype CSVInterpreter {
         delimiter: ";";
     }
 
     // rename the temperature column
-    block BatterietemperaturCellWriter1 oftype CellWriter {
+    block RenameTemperaturCellWriter oftype CellWriter {
         at: cell E1;
         write: ["temperature"];
     }
 
     // rename the battery temperature column
-    block BatterietemperaturCellWriter2 oftype CellWriter {
+    block RenameTemperaturBatteryCellWriter oftype CellWriter {
         at: cell J1;
         write: ["battery_temperature"];
     }
@@ -42,7 +42,7 @@ pipeline BatterietemperaturPipeline {
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
-            "id" oftype integer,
+            "id" oftype ValidGeraetNumber,
             "producer" oftype text,
             "model" oftype text,
             "month" oftype text,
@@ -52,7 +52,7 @@ pipeline BatterietemperaturPipeline {
         ];
     }
 
-    // convert temperatures from celsius to fahrenheit
+    // convert temperatures from Celsius to Fahrenheit
     block BatterietemperaturTempConverter1 oftype TableTransformer {
         inputColumns: ['temperature'];
         outputColumn: 'temperature';
@@ -65,12 +65,11 @@ pipeline BatterietemperaturPipeline {
         use: CelsiusToFahrenheit;
     }
 
-    // load the table into a sink, here into an sqlite file
+    // load the table into a sink, here into an SQLite file
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
         file: "./temperatures.sqlite";
     }
-}
 
     // numeric values for 'id' must be positive integers
     valuetype ValidGeraetNumber oftype integer {
@@ -78,12 +77,13 @@ pipeline BatterietemperaturPipeline {
     }
 
     constraint PositiveIntegerConstraint {
-        value > 0;
+        value: "> 0";
     }
 
-    // transform celsius to fahrenheit
+    // transform Celsius to Fahrenheit
     transform CelsiusToFahrenheit {
         from Celsius oftype decimal;
         to Fahrenheit oftype decimal;
         Fahrenheit: (Celsius * 9/5) + 32;
     }
+}
