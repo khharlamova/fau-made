@@ -1,5 +1,5 @@
 pipeline BatterietemperaturPipeline {
-    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> RenameTemperaturCellWriter -> RenameTemperaturBatteryCellWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
 
     // extracting data from the URL
     block BatterietemperaturDownloader oftype HttpExtractor {
@@ -24,18 +24,6 @@ pipeline BatterietemperaturPipeline {
     // interpret the file as a CSV
     block BatterietemperaturCSVInterpreter oftype CSVInterpreter {
         delimiter: ";";
-    }
-
-    // rename the temperature column
-    block RenameTemperaturCellWriter oftype CellWriter {
-        at: cell E1;
-        write: ["temperature"];
-    }
-
-    // rename the battery temperature column
-    block RenameTemperaturBatteryCellWriter oftype CellWriter {
-        at: cell J1;
-        write: ["battery_temperature"];
     }
 
     // interpret the sheet as a table by adding structure
