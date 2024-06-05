@@ -42,7 +42,7 @@ pipeline BatterietemperaturPipeline {
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
-            "id" oftype ValidGeraetNumber,
+            "id" oftype PositiveInteger,
             "producer" oftype text,
             "model" oftype text,
             "month" oftype text,
@@ -60,7 +60,7 @@ pipeline BatterietemperaturPipeline {
 }
 
     // numeric values for 'id' must be positive integers
-    valuetype ValidGeraetNumber oftype integer {
+    valuetype PositiveInteger oftype integer {
         constraints: [PositiveIntegerConstraint];
     }
 
