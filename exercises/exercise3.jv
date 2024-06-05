@@ -1,82 +1,72 @@
-pipeline GoodsPipeline{
-    GoodsExtractor -> GoodsTextFileInterpreter -> GoodsTextRangeSelector -> GoodsCSVInterpreter -> GoodsCellWriter_AtoE -> GoodsCellWriter_ATtoAU -> GoodsTableInterpreter -> GoodsLoader;
+pipeline BatterietemperaturPipeline {
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturCSVInterpreter -> BatterietemperaturColumnSelector -> BatterietemperaturColumnRenamer -> BatterietemperaturConverter -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
 
-    block GoodsExtractor oftype HttpExtractor {
-        url: "https://www-genesis.destatis.de/genesis/downloads/00/tables/46131-0014_00.csv";
-    }
-    
-    // ensure German umlauts are saved correctly
-    block GoodsTextFileInterpreter oftype TextFileInterpreter {
-        encoding: "latin3";
+    block BatterietemperaturDownloader oftype HttpExtractor {
+        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
     }
 
-    // remove metadata rows, data starts in row 9
-    block GoodsTextRangeSelector oftype TextRangeSelector {
-        lineFrom: 8;
-        lineTo: 41336;
+    block BatterietemperaturUnzipper oftype ZipExtractor {
+        file: "./mowesta-dataset-20221107.zip";
+        outputDirectory: "./unzipped";
     }
 
-    block GoodsCSVInterpreter oftype CSVInterpreter {
-        delimiter: ";";
+    block BatterietemperaturCSVInterpreter oftype CSVInterpreter {
+        file: "./unzipped/data.csv";
+        delimiter: ",";
         enclosing: '';
     }
 
-    // select only a subset of columns, add header names for the first columns A-E
-    block GoodsCellWriter_AtoE oftype CellWriter {
-        at: range A1:E1;
-         write: ["year", "month", "goods_id", "goods_name", "goods_source"];
+    block BatterietemperaturColumnSelector oftype ColumnSelector {
+        columns: ["Geraet", "Hersteller", "Model", "Monat", "Temperatur in °C (DWD)", "Batterietemperatur in °C"];
     }
 
-    // select only a subset of columns, rename headers for the quantity columns AT-AU
-    block GoodsCellWriter_ATtoAU oftype CellWriter {
-        at: range AT1:AU1;
-         write: ["abroad", "total"];
+    block BatterietemperaturColumnRenamer oftype ColumnRenamer {
+        mappings: {
+            "Geraet": "id",
+            "Hersteller": "producer",
+            "Model": "model",
+            "Monat": "month",
+            "Temperatur in °C (DWD)": "temperature",
+            "Batterietemperatur in °C": "battery_temperature"
+        };
     }
-    
-    // interpret the sheet as a table by adding structure
-    block GoodsTableInterpreter oftype TableInterpreter {
-        header: true;
-        columns:[
-            "year" oftype Integer,
-            "month" oftype GermanMonth,
-            "goods_name" oftype text,
-            "goods_source" oftype text,
-            "goods_id" oftype GoodsId,
-            "abroad" oftype Integer,
-            "total" oftype Integer
+
+    block BatterietemperaturConverter oftype ColumnTransformer {
+        transformations: [
+            {
+                column: "temperature",
+                formula: "(temperature * 9/5) + 32"
+            },
+            {
+                column: "battery_temperature",
+                formula: "(battery_temperature * 9/5) + 32"
+            }
         ];
     }
 
-    // load the table into a sink, here into a sqlite file
-    block GoodsLoader oftype SQLiteLoader {
-        table: "goods";
-        file: "./goodsTransportedByTrain.sqlite";
+    block BatterietemperaturTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "id" oftype BigInt,
+            "producer" oftype Text,
+            "model" oftype Text,
+            "month" oftype Text,
+            "temperature" oftype Float,
+            "battery_temperature" oftype Float
+        ];
+    }
+
+    block BatterietemperaturLoader oftype SQLiteLoader {
+        table: "temperatures";
+        databaseFile: "./temperatures.sqlite";
     }
 }
 
-
-// numeric values must be positive integers
-valuetype Integer oftype integer {
-    constraints:[IntegerConstrant];
+// numeric values for 'id' must be positive integers
+valuetype BigInt oftype integer {
+    constraints: [PositiveIntegerConstraint];
 }
 
-constraint IntegerConstrant on decimal:
-    value >= 0;
-
-// 'month' must be a German month, capitalized
-valuetype GermanMonth oftype text {
-    constraints:[MonthConstraint];
-}
-
-constraint MonthConstraint oftype AllowlistConstraint {
-    allowlist:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-}
-
-// 'goods_id' must start with NST7-, followed by three numbers or capital letters
-valuetype GoodsId oftype text {
-    constraints:[GoodsIdConstraint];
-}
-
-constraint GoodsIdConstraint oftype RegexConstraint {
-    regex: /^NST7-([A-Z0-9]{3})$/;
+constraint PositiveIntegerConstraint on integer {
+    value > 0;
 }
