@@ -5,7 +5,7 @@ pipeline BatterietemperaturPipeline {
         url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
     }
 
-    block BatterietemperaturUnzipper oftype Unzipper {
+    block BatterietemperaturUnzipper oftype ZipExtractor {
         file: "./mowesta-dataset-20221107.zip";
         outputDirectory: "./unzipped";
     }
@@ -21,7 +21,7 @@ pipeline BatterietemperaturPipeline {
     }
 
     block BatterietemperaturColumnRenamer oftype ColumnRenamer {
-        rename: {
+        mappings: {
             "Geraet": "id",
             "Hersteller": "producer",
             "Model": "model",
@@ -58,7 +58,7 @@ pipeline BatterietemperaturPipeline {
 
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
-        file: "./temperatures.sqlite";
+        databaseFile: "./temperatures.sqlite";
     }
 }
 
@@ -67,6 +67,8 @@ valuetype BigInt oftype integer {
     constraints: [PositiveIntegerConstraint];
 }
 
-constraint PositiveIntegerConstraint on integer:
+constraint PositiveIntegerConstraint on integer {
     value > 0;
+}
+
 
