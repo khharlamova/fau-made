@@ -42,7 +42,7 @@ pipeline BatterietemperaturPipeline {
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
-            "id" oftype PositiveInteger,
+            "id" oftype decimal,
             "producer" oftype text,
             "model" oftype text,
             "month" oftype text,
@@ -58,13 +58,4 @@ pipeline BatterietemperaturPipeline {
         file: "./temperatures.sqlite";
     }
 }
-
-    // numeric values for 'id' must be positive integers
-    valuetype PositiveInteger oftype integer {
-        constraints: [PositiveIntegerConstraint];
-    }
-
-    constraint PositiveIntegerConstraint {
-        value > 0;
-    }
 
