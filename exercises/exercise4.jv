@@ -1,5 +1,5 @@
 pipeline BatterietemperaturPipeline {
-    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> RenameTemperaturCellWriter -> RenameTemperaturBatteryCellWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
 
     // extracting data from the URL
     block BatterietemperaturDownloader oftype HttpExtractor {
@@ -26,11 +26,23 @@ pipeline BatterietemperaturPipeline {
         delimiter: ";";
     }
 
+    // rename the temperature column
+    block RenameTemperaturCellWriter oftype CellWriter {
+        at: cell E1;
+        write: ["temperature"];
+    }
+
+    // rename the battery temperature column
+    block RenameTemperaturBatteryCellWriter oftype CellWriter {
+        at: cell J1;
+        write: ["battery_temperature"];
+    }
+
     // interpret the sheet as a table by adding structure
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
-            "id" oftype decimal,
+            "id" oftype PositiveInteger,
             "producer" oftype text,
             "model" oftype text,
             "month" oftype text,
@@ -40,6 +52,19 @@ pipeline BatterietemperaturPipeline {
         ];
     }
 
+    // convert temperatures from Celsius to Fahrenheit
+    block BatterietemperaturTempConverter1 oftype TableTransformer {
+        inputColumns: ['temperature'];
+        outputColumn: 'temperature';
+        use: CelsiusToFahrenheit;
+    }
+
+    block BatterietemperaturTempConverter2 oftype TableTransformer {
+        inputColumns: ['battery_temperature'];
+        outputColumn: 'battery_temperature';
+        use: CelsiusToFahrenheit;
+    }
+
     // load the table into a sink, here into an SQLite file
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
@@ -47,3 +72,18 @@ pipeline BatterietemperaturPipeline {
     }
 }
 
+    // numeric values for 'id' must be positive integers
+    valuetype PositiveInteger oftype integer {
+        constraints: [PositiveIntegerConstraint];
+    }
+
+    constraint PositiveIntegerConstraint {
+        value > 0;
+    }
+
+    // transform Celsius to Fahrenheit
+    transform CelsiusToFahrenheit {
+        from Celsius oftype decimal;
+        to Fahrenheit oftype decimal;
+        Fahrenheit: (Celsius * 9/5) + 32;
+    }
