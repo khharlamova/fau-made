@@ -1,1 +1,72 @@
+pipeline BatterietemperaturPipeline {
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturCSVInterpreter -> BatterietemperaturColumnSelector -> BatterietemperaturColumnRenamer -> BatterietemperaturConverter -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
+
+    block BatterietemperaturDownloader oftype HttpExtractor {
+        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+    }
+
+    block BatterietemperaturUnzipper oftype Unzipper {
+        file: "./mowesta-dataset-20221107.zip";
+        outputDirectory: "./unzipped";
+    }
+
+    block BatterietemperaturCSVInterpreter oftype CSVInterpreter {
+        file: "./unzipped/data.csv";
+        delimiter: ",";
+        enclosing: '';
+    }
+
+    block BatterietemperaturColumnSelector oftype ColumnSelector {
+        columns: ["Geraet", "Hersteller", "Model", "Monat", "Temperatur in °C (DWD)", "Batterietemperatur in °C"];
+    }
+
+    block BatterietemperaturColumnRenamer oftype ColumnRenamer {
+        rename: {
+            "Geraet": "id",
+            "Hersteller": "producer",
+            "Model": "model",
+            "Monat": "month",
+            "Temperatur in °C (DWD)": "temperature",
+            "Batterietemperatur in °C": "battery_temperature"
+        };
+    }
+
+    block BatterietemperaturConverter oftype ColumnTransformer {
+        transformations: [
+            {
+                column: "temperature",
+                formula: "(temperature * 9/5) + 32"
+            },
+            {
+                column: "battery_temperature",
+                formula: "(battery_temperature * 9/5) + 32"
+            }
+        ];
+    }
+
+    block BatterietemperaturTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "id" oftype BigInt,
+            "producer" oftype Text,
+            "model" oftype Text,
+            "month" oftype Text,
+            "temperature" oftype Float,
+            "battery_temperature" oftype Float
+        ];
+    }
+
+    block BatterietemperaturLoader oftype SQLiteLoader {
+        table: "temperatures";
+        file: "./temperatures.sqlite";
+    }
+}
+
+// numeric values for 'id' must be positive integers
+valuetype BigInt oftype integer {
+    constraints: [PositiveIntegerConstraint];
+}
+
+constraint PositiveIntegerConstraint on integer:
+    value > 0;
 
