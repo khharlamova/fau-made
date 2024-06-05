@@ -1,7 +1,7 @@
 pipeline BatterietemperaturPipeline {
     BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> RenameTemperaturCellWriter -> RenameTemperaturBatteryCellWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
 
-    // Extracting data from the url
+    // extract data from the url
     block BatterietemperaturDownloader oftype HttpExtractor {
         url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
     }
@@ -18,7 +18,7 @@ pipeline BatterietemperaturPipeline {
 
     // interpret the file as a text file
     block BatterietemperaturFileInterpreter oftype TextFileInterpreter {
-        encoding: "utf-8";
+        encoding: "utf8";  // correct encoding value
     }
 
     // interpret the file as a csv
@@ -42,13 +42,13 @@ pipeline BatterietemperaturPipeline {
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
-            "id" oftype Integer,
-            "producer" oftype text,
-            "model" oftype text,
-            "month" oftype integer,
-            "temperature" oftype decimal,
-            "battery_temperature" oftype decimal,
-            "device_active" oftype text
+            "id" oftype ValidGeraetNumber,
+            "producer" oftype Text,
+            "model" oftype Text,
+            "month" oftype Text,
+            "temperature" oftype Decimal,
+            "battery_temperature" oftype Decimal,
+            "device_active" oftype Text
         ];
     }
 
@@ -68,16 +68,16 @@ pipeline BatterietemperaturPipeline {
     // load the table into a sink, here into an sqlite file
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
-        databaseFile: "./temperatures.sqlite";
+        file: "./temperatures.sqlite";
     }
 
-    // 'id' must be positive integers
-    valuetype Integer oftype integer {
+    // numeric values for 'id' must be positive integers
+    valuetype ValidGeraetNumber oftype integer {
         constraints: [PositiveIntegerConstraint];
     }
 
     constraint PositiveIntegerConstraint on integer {
-        value > 0;
+        value: "> 0";
     }
 
     // transform celsius to fahrenheit
