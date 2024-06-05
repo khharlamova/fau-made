@@ -1,29 +1,29 @@
 pipeline BatterietemperaturPipeline {
     BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturCSVInterpreter -> BatterietemperaturColumnSelector -> BatterietemperaturColumnRenamer -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturTableInterpreter -> BatterietemperaturLoader;
 
-    // Extracting data from the URL and unzips it into a Filesystem
+    // extracting data from the URL
     block BatterietemperaturDownloader oftype HttpExtractor {
         url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
     }
 
-    // Unzip the downloaded file
+    // unzip the downloaded file
     block BatterietemperaturUnzipper oftype ZipExtractor {
-        file: "./mowesta-dataset-20221107.zip";
-        outputDirectory: "./unzipped";
+        sourceFile: "./mowesta-dataset-20221107.zip";
+        destinationDirectory: "./unzipped";
     }
 
-    // Interpret the File as a CSV
+    // interpret the File as a CSV
     block BatterietemperaturCSVInterpreter oftype CSVInterpreter {
         file: "./unzipped/data.csv";
         delimiter: ";";
     }
 
-    // Select the required columns
+    // select the required columns
     block BatterietemperaturColumnSelector oftype ColumnSelector {
         columns: ["Geraet", "Hersteller", "Model", "Monat", "Temperatur in °C (DWD)", "Batterietemperatur in °C"];
     }
 
-    // Rename the columns
+    // rename the columns
     block BatterietemperaturColumnRenamer oftype ColumnRenamer {
         mappings: {
             "Geraet": "id",
@@ -35,7 +35,7 @@ pipeline BatterietemperaturPipeline {
         };
     }
 
-    // Convert temperatures from Celsius to Fahrenheit
+    // convert temperatures from Celsius to Fahrenheit
     block BatterietemperaturTempConverter1 oftype ColumnTransformer {
         transformations: [
             {
@@ -54,11 +54,11 @@ pipeline BatterietemperaturPipeline {
         ];
     }
 
-    // Interpret the data as a table with the appropriate types
+    // interpret the sheet as a table by adding structure
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
-            "id" oftype BigInt,
+            "id" oftype Integer,
             "producer" oftype Text,
             "model" oftype Text,
             "month" oftype Text,
@@ -67,21 +67,18 @@ pipeline BatterietemperaturPipeline {
         ];
     }
 
-    // Load the transformed data into an SQLite database
+    // load the table into a sink, here into a SQLite file
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
         databaseFile: "./temperatures.sqlite";
     }
 }
 
-// Numeric values for 'id' must be positive integers
-valuetype BigInt oftype integer {
+// numeric values must be positive integers
+valuetype Integer oftype integer {
     constraints: [PositiveIntegerConstraint];
 }
 
 constraint PositiveIntegerConstraint on integer {
     value > 0;
 }
-
-
-
