@@ -1,5 +1,5 @@
 pipeline BatterietemperaturPipeline {
-    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> RenameTemperaturCellWriter -> RenameTemperaturBatteryCellWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturCellWriter1 -> BatterietemperaturBatteryCellWriter2 -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
 
     // extracting data from the url
     block BatterietemperaturDownloader oftype HttpExtractor {
@@ -27,13 +27,13 @@ pipeline BatterietemperaturPipeline {
     }
 
     // rename the temperature column
-    block RenameTemperaturCellWriter oftype CellWriter {
+    block BatterietemperaturCellWriter1 oftype CellWriter {
         at: cell E1;
         write: ["temperature"];
     }
 
     // rename the battery temperature column
-    block RenameTemperaturBatteryCellWriter oftype CellWriter {
+    block BatterietemperaturCellWriter2 oftype CellWriter {
         at: cell J1;
         write: ["battery_temperature"];
     }
@@ -70,14 +70,15 @@ pipeline BatterietemperaturPipeline {
         table: "temperatures";
         file: "./temperatures.sqlite";
     }
+}
 
     // numeric values for 'id' must be positive integers
     valuetype ValidGeraetNumber oftype integer {
         constraints: [PositiveIntegerConstraint];
     }
 
-    constraint PositiveIntegerConstraint on integer {
-        value: "> 0";
+    constraint PositiveIntegerConstraint {
+        value > 0;
     }
 
     // transform celsius to fahrenheit
@@ -86,4 +87,3 @@ pipeline BatterietemperaturPipeline {
         to Fahrenheit oftype decimal;
         Fahrenheit: (Celsius * 9/5) + 32;
     }
-}
