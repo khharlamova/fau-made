@@ -2,7 +2,7 @@ pipeline BatterietemperaturPipeline {
     BatterietemperaturDownloader -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
 
     // extracting data from the URL
-    block BatterietemperaturDownloader oftype GTFSExtractor {
+    block BatterietemperaturDownloader oftype HttpExtractor {
         url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
     }
 
@@ -22,7 +22,7 @@ pipeline BatterietemperaturPipeline {
 
     block BatterietemperaturWriter oftype CellWriter {
         at: range A1:J1;
-        write: ["id", "producer","model", "month","temperature", "","", "","", "battery_temperature"];
+        write: ["id", "producer", "model", "month", "temperature", "", "", "", "", "battery_temperature"];
     }
 
     // interpret the sheet as a table by adding structure
@@ -32,13 +32,13 @@ pipeline BatterietemperaturPipeline {
             "id" oftype PositiveInteger,
             "producer" oftype text,
             "model" oftype text,
-            "month" oftype text,
+            "month" oftype MonthType,
             "temperature" oftype decimal,
             "battery_temperature" oftype decimal,
         ];
     }
 
-    // convert temperatures from Celsius to Fahrenheit
+    // convert temperatures from celsius to fahrenheit
     block BatterietemperaturTempConverter1 oftype TableTransformer {
         inputColumns: ['temperature'];
         outputColumn: 'temperature';
@@ -56,20 +56,30 @@ pipeline BatterietemperaturPipeline {
         table: "temperatures";
         file: "./temperatures.sqlite";
     }
-}
 
     // numeric values for 'id' must be positive integers
     valuetype PositiveInteger oftype integer {
         constraints: [PositiveIntegerConstraint];
     }
 
-    constraint PositiveIntegerConstraint {
+    constraint PositiveIntegerConstraint ontype integer {
         value > 0;
     }
 
-    // transform Celsius to Fahrenheit
+    // define the month value type
+    valuetype MonthType oftype integer {
+        constraints: [MonthConstraint];
+    }
+
+    constraint MonthConstraint ontype integer {
+        value >= 1;
+        value <= 12;
+    }
+
+    // transform celsius to fahrenheit
     transform CelsiusToFahrenheit {
         from Celsius oftype decimal;
         to Fahrenheit oftype decimal;
         Fahrenheit: (Celsius * 9/5) + 32;
     }
+}
