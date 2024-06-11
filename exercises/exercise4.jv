@@ -1,5 +1,5 @@
 pipeline BatterietemperaturPipeline {
-    BatterietemperaturDownloader -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturWriter -> BatterietemperaturSelector -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
+    BatterietemperaturDownloader -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
 
     // extracting data from the URL
     block BatterietemperaturDownloader oftype GTFSExtractor {
@@ -13,7 +13,6 @@ pipeline BatterietemperaturPipeline {
 
     // interpret the file as a text file
     block BatterietemperaturFileInterpreter oftype TextFileInterpreter {
-        encoding: "utf8"; 
     }
 
     // interpret the file as a CSV
@@ -22,12 +21,8 @@ pipeline BatterietemperaturPipeline {
     }
 
     block BatterietemperaturWriter oftype CellWriter {
-        at: range A1:F1;
-         write: ["id", "producer", "model", "month", "temperature", "battery_temperature"];
-    }
-
-    block BatterietemperaturSelectore oftype CellRangeSelector {
-        select: range A1:K*;
+        at: range A1:J1;
+        write: ["id", "producer","model", "month","temperature", "","", "","", "battery_temperature"];
     }
 
     // interpret the sheet as a table by adding structure
@@ -59,7 +54,7 @@ pipeline BatterietemperaturPipeline {
     // load the table into a sink, here into an SQLite file
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
-        file: "temperatures.sqlite";
+        file: "./temperatures.sqlite";
     }
 }
 
