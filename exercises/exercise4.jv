@@ -26,16 +26,13 @@ pipeline BatterietemperaturPipeline {
         delimiter: ";";
     }
 
-    // rename the temperature column
     block RenameTemperaturCellWriter oftype CellWriter {
-        at: cell E1;
-        write: ["temperature"];
+        at: range A1:F1;
+         write: ["id", "producer", "model", "month", "temperature", "battery_temperature"];
     }
 
-    // rename the battery temperature column
-    block RenameTemperaturBatteryCellWriter oftype CellWriter {
-        at: cell J1;
-        write: ["battery_temperature"];
+    block RenameTemperaturBatteryCellWriter oftype CellRangeSelector {
+        select: range A1:J*;
     }
 
     // interpret the sheet as a table by adding structure
@@ -48,7 +45,6 @@ pipeline BatterietemperaturPipeline {
             "month" oftype text,
             "temperature" oftype decimal,
             "battery_temperature" oftype decimal,
-            "device_active" oftype text
         ];
     }
 
