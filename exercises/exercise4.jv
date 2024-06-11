@@ -34,8 +34,58 @@ pipeline BatterietemperaturPipeline {
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
-            "id" oftype PositiveInteger,
-            "producer" oftype text,
-            "model" oftype text,
-           
+            "id" oftype PositiveInteger;
+            "producer" oftype text;
+            "model" oftype text;
+            "month" oftype MonthType;
+            "temperature" oftype decimal;
+            "battery_temperature" oftype decimal;
+        ];
+    }
+
+    // convert temperatures from Celsius to Fahrenheit
+    block BatterietemperaturTempConverter1 oftype TableTransformer {
+        inputColumns: ['temperature'];
+        outputColumn: 'temperature';
+        use: CelsiusToFahrenheit;
+    }
+
+    block BatterietemperaturTempConverter2 oftype TableTransformer {
+        inputColumns: ['battery_temperature'];
+        outputColumn: 'battery_temperature';
+        use: CelsiusToFahrenheit;
+    }
+
+    // load the table into a sink, here into an SQLite file
+    block BatterietemperaturLoader oftype SQLiteLoader {
+        table: "temperatures";
+        file: "./temperatures.sqlite";
+    }
+}
+
+// numeric values for 'id' must be positive integers
+valuetype PositiveInteger oftype integer {
+    constraints: [PositiveIntegerConstraint];
+}
+
+constraint PositiveIntegerConstraint on integer {
+    value > 0;
+}
+
+// month value must be between 1 and 12
+valuetype MonthType oftype integer {
+    constraints: [MonthConstraint];
+}
+
+constraint MonthConstraint on integer {
+    value >= 1;
+    value <= 12;
+}
+
+// transform Celsius to Fahrenheit
+transform CelsiusToFahrenheit {
+    from Celsius oftype decimal;
+    to Fahrenheit oftype decimal;
+    Fahrenheit: (Celsius * 9/5) + 32;
+}
 
