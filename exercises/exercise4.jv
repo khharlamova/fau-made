@@ -49,12 +49,11 @@ pipeline BatterietemperaturPipeline {
         file: "./temperatures.sqlite";
     }
 
-valuetype PositiveID oftype integer {
-    constraints: [Positive,];
-}
+constraint PositiveIDConstraint on integer:
+value >= 1;
 
-constraint Positive oftype RangeConstraint {
-value > 0;
+valuetype PositiveID oftype integer {
+    constraints: [PositiveIDConstraint,];
 }
 
  transform CelsiusToFahrenheit {
