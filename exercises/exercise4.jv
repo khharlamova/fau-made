@@ -1,9 +1,14 @@
 pipeline BatterietemperaturPipeline {
-    BatterietemperaturDownloader -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
+    BatterietemperaturDownloader -> BatterietemperaturUnzipper -> BatterietemperaturFilePicker -> BatterietemperaturFileInterpreter -> BatterietemperaturCSVInterpreter -> BatterietemperaturWriter -> BatterietemperaturTableInterpreter -> BatterietemperaturTempConverter1 -> BatterietemperaturTempConverter2 -> BatterietemperaturLoader;
 
     // extracting data from the URL
     block BatterietemperaturDownloader oftype HttpExtractor {
         url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+    }
+
+    // unzip the downloaded file
+    block BatterietemperaturUnzipper oftype ArchiveInterpreter {
+        archiveType: "zip";
     }
 
     // select the data file from the unzipped contents
@@ -32,54 +37,5 @@ pipeline BatterietemperaturPipeline {
             "id" oftype PositiveInteger,
             "producer" oftype text,
             "model" oftype text,
-            "month" oftype MonthType,
-            "temperature" oftype decimal,
-            "battery_temperature" oftype decimal,
-        ];
-    }
+           
 
-    // convert temperatures from celsius to fahrenheit
-    block BatterietemperaturTempConverter1 oftype TableTransformer {
-        inputColumns: ['temperature'];
-        outputColumn: 'temperature';
-        use: CelsiusToFahrenheit;
-    }
-
-    block BatterietemperaturTempConverter2 oftype TableTransformer {
-        inputColumns: ['battery_temperature'];
-        outputColumn: 'battery_temperature';
-        use: CelsiusToFahrenheit;
-    }
-
-    // load the table into a sink, here into an SQLite file
-    block BatterietemperaturLoader oftype SQLiteLoader {
-        table: "temperatures";
-        file: "./temperatures.sqlite";
-    }
-
-    // numeric values for 'id' must be positive integers
-    valuetype PositiveInteger oftype integer {
-        constraints: [PositiveIntegerConstraint];
-    }
-
-    constraint PositiveIntegerConstraint ontype integer {
-        value > 0;
-    }
-
-    // define the month value type
-    valuetype MonthType oftype integer {
-        constraints: [MonthConstraint];
-    }
-
-    constraint MonthConstraint ontype integer {
-        value >= 1;
-        value <= 12;
-    }
-
-    // transform celsius to fahrenheit
-    transform CelsiusToFahrenheit {
-        from Celsius oftype decimal;
-        to Fahrenheit oftype decimal;
-        Fahrenheit: (Celsius * 9/5) + 32;
-    }
-}
