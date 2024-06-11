@@ -9,7 +9,9 @@ pipeline BatterietemperaturPipeline {
         path: "/data.csv";
     }
 
-    block BatterietemperaturFileInterpreter oftype TextFileInterpreter { }
+    block BatterietemperaturFileInterpreter oftype TextFileInterpreter {
+    encoding: "utf8";
+    }
     
     block BatterietemperaturCSVInterpreter oftype CSVInterpreter {
         delimiter: ";";
