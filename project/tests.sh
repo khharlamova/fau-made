@@ -1,6 +1,6 @@
 #!/bin/bash
 
-output_dir="./fau-made/project"
+output_dir="./project"
 processed_file_1="$output_dir/processed_co2_emissions_2018_2022.csv"
 processed_file_2="$output_dir/processed_air_quality_2018_2022.csv"
 
