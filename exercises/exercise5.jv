@@ -27,12 +27,12 @@ pipeline GTFSDataPipeline {
     }
 
     // filter stops by zone_id 1645 as per task
-    block FilterStopsByZone oftype TableRowFilter {
+    block FilterStopsByZone oftype TableFilter {
         condition: "zone_id = 1645";
     }
 
     // validate stop data as per task
-    block ValidateStopData oftype TableRowFilter {
+    block ValidateStopData oftype TableFilter {
         conditions: [
             "stop_name IS NOT NULL AND stop_name != ''",
             "stop_lat BETWEEN -90 AND 90",
@@ -57,38 +57,33 @@ pipeline GTFSDataPipeline {
             "zone_id" oftype integer
         ];
     }
+}
 
     // load the table into a sink, here into an SQLite file
     block GTFSLoader oftype SQLiteLoader {
         table: "stops";
         file: "gtfs.sqlite";
     }
-}
 
     // should be positive as per task
     valuetype PositiveID oftype integer {
-        constraints: [PositiveIDConstraint];
+        constraints: PositiveIDConstraint;
     }
-
-    constraint PositiveIDConstraint on integer {
+    
+    constraint PositiveIDConstraint on integer:
         value >= 1;
-    }
 
     // should stay within the range
     valuetype Latitude oftype decimal {
-        constraints: [LatitudeConstraint];
+        constraints: LatitudeConstraint;
     }
-
-    constraint LatitudeConstraint on decimal {
-        value >= -90;
-        value <= 90;
-    }
+    
+    constraint LatitudeConstraint on decimal:
+        value >= -90 and value <= 90;
 
     valuetype Longitude oftype decimal {
-        constraints: [LongitudeConstraint];
+        constraints: LongitudeConstraint;
     }
-
-    constraint LongitudeConstraint on decimal {
-        value >= -90;
-        value <= 90;
-    }
+    
+    constraint LongitudeConstraint on decimal:
+        value >= -90 and value <= 90;
