@@ -23,16 +23,16 @@ pipeline GTFSDataPipeline {
 
     // interpret the file as CSV
     block StopsCSVInterpreter oftype CSVInterpreter {
-        delimiter: ";";
+        delimiter: ",";
     }
 
     // filter stops by zone_id 1645 as per task
-    block FilterStopsByZone oftype TableFilter {
+    block FilterStopsByZone oftype TableRowFilter {
         condition: "zone_id = 1645";
     }
 
     // validate stop data as per task
-    block ValidateStopData oftype TableFilter {
+    block ValidateStopData oftype TableRowFilter {
         conditions: [
             "stop_name IS NOT NULL AND stop_name != ''",
             "stop_lat BETWEEN -90 AND 90",
@@ -50,10 +50,10 @@ pipeline GTFSDataPipeline {
     block StopsTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
-            "stop_id" oftype bigint,
+            "stop_id" oftype PositiveID,
             "stop_name" oftype text,
-            "stop_lat" oftype float,
-            "stop_lon" oftype float,
+            "stop_lat" oftype Latitude,
+            "stop_lon" oftype Longitude,
             "zone_id" oftype integer
         ];
     }
@@ -69,26 +69,26 @@ pipeline GTFSDataPipeline {
     valuetype PositiveID oftype integer {
         constraints: [PositiveIDConstraint];
     }
-    
+
     constraint PositiveIDConstraint on integer {
         value >= 1;
     }
 
     // should stay within the range
-    valuetype Latitude oftype float {
+    valuetype Latitude oftype decimal {
         constraints: [LatitudeConstraint];
     }
-    
-    constraint LatitudeConstraint on float {
+
+    constraint LatitudeConstraint on decimal {
         value >= -90;
         value <= 90;
     }
 
-    valuetype Longitude oftype float {
+    valuetype Longitude oftype decimal {
         constraints: [LongitudeConstraint];
     }
-    
-    constraint LongitudeConstraint on float {
+
+    constraint LongitudeConstraint on decimal {
         value >= -90;
         value <= 90;
     }
