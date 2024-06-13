@@ -1,10 +1,13 @@
 #!/bin/bash
 
-output_dir=~/project
+output_dir="./fau-made/project"
 processed_file_1="$output_dir/processed_co2_emissions_2018_2022.csv"
 processed_file_2="$output_dir/processed_air_quality_2018_2022.csv"
 
-python3 pipeline.py
+# Ensure the output directory exists
+mkdir -p $output_dir
+
+python3 $output_dir/pipeline.py
 
 # Check if the output files are created
 if [[ -f "$processed_file_1" ]]; then
