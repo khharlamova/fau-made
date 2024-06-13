@@ -23,8 +23,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests pandas
 
+    - name: List directory contents for debugging
+      run: ls -R
+
     - name: Make tests.sh executable
-      run: chmod +x fau-made/project/tests.sh
+      run: chmod +x project/tests.sh
 
     - name: Run tests
-      run: ./fau-made/project/tests.sh
+      run: ./project/tests.sh
