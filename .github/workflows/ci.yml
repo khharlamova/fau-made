@@ -24,7 +24,7 @@ jobs:
         pip install requests pandas
 
     - name: Make tests.sh executable
-      run: chmod +x ./project/tests.sh
+      run: chmod +x fau-made/project/tests.sh
 
     - name: Run tests
-      run: ./project/tests.sh
+      run: ./fau-made/project/tests.sh
