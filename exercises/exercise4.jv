@@ -9,6 +9,7 @@ pipeline BatterietemperaturPipeline {
         path: "/data.csv";
     }
 
+    // ensure correct encoding
     block BatterietemperaturTextFileInterpreter oftype TextFileInterpreter {
     encoding: "utf8";
     }
@@ -17,11 +18,13 @@ pipeline BatterietemperaturPipeline {
         delimiter: ";";
     }
 
+    // select and rename only needed columns
     block BatterietemperaturRenameHeader oftype CellWriter {
     at: range A1:J1;
-    write: ["id", "producer","model", "month","temperature", "","", "","", "battery_temperature"];
+    write: ["id", "producer","model", "month", "temperature", "","", "","", "battery_temperature"];
     }
 
+    // interpret the sheet as a table by adding structure
     block BatterietemperaturTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
@@ -34,6 +37,7 @@ pipeline BatterietemperaturPipeline {
         ];
     }
 
+    // transform, see below
     block CelsiusToFahrenheitTemperatureTransformation oftype TableTransformer {
     inputColumns: ['temperature'];
     outputColumn: 'temperature';
@@ -46,22 +50,24 @@ pipeline BatterietemperaturPipeline {
     use: CelsiusToFahrenheit;
     }
 
+    // load the table into a sink, here into a sqlite file
     block BatterietemperaturLoader oftype SQLiteLoader {
         table: "temperatures";
         file: "./temperatures.sqlite";
     }
+}
 
-constraint PositiveIDConstraint on integer:
-value >= 1;
-
+// numeric values must be positive integers
 valuetype PositiveID oftype integer {
     constraints: [PositiveIDConstraint,];
 }
 
- transform CelsiusToFahrenheit {
+constraint PositiveIDConstraint on integer:
+value >= 1;
+
+// transform as per task description
+transform CelsiusToFahrenheit {
    from Celsius oftype decimal;
    to Fahrenheit oftype decimal;
    Fahrenheit: (Celsius * 9/5) + 32;
  }
- 
-}
