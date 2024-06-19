@@ -28,12 +28,12 @@ pipeline GTFSDataPipeline {
     }
 
     // filter stops by zone_id 1645 as per task
-    block FilterStopsByZone oftype TableFilter {
+    block FilterStopsByZone oftype Filter {
         condition: "zone_id = 1645";
     }
 
     // validate stop data as per task
-    block ValidateStopData oftype TableFilter {
+    block ValidateStopData oftype Filter {
         conditions: [
             "stop_name IS NOT NULL AND stop_name != ''",
             "stop_lat BETWEEN -90 AND 90",
