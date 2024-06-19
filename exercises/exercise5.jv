@@ -13,7 +13,7 @@ pipeline GTFSDataPipeline {
 
     // get the file
     block StopsFilePicker oftype FilePicker {
-        path: "stops.txt";
+        path: "/stops.txt";
     }
 
     // interpret the file correctly
@@ -24,6 +24,7 @@ pipeline GTFSDataPipeline {
     // interpret the file as CSV
     block StopsCSVInterpreter oftype CSVInterpreter {
         delimiter: ",";
+        enclosing: '"';
     }
 
     // filter stops by zone_id 1645 as per task
