@@ -1,5 +1,5 @@
 pipeline GTFSDataPipeline {
-    GTFSDownloader -> GTFSUnzipper -> StopsFilePicker -> StopsTextFileInterpreter -> StopsCSVInterpreter -> FilterStopsByZone -> ValidateStopData -> RenameStopsHeader -> StopsTableInterpreter -> GTFSLoader;
+    GTFSDownloader -> GTFSUnzipper -> StopsFilePicker -> StopsTextFileInterpreter -> StopsCSVInterpreter -> RenameStopsHeader -> StopsTableInterpreter -> GTFSLoader;
 
     // download zip file
     block GTFSDownloader oftype HttpExtractor {
@@ -25,20 +25,6 @@ pipeline GTFSDataPipeline {
     block StopsCSVInterpreter oftype CSVInterpreter {
         delimiter: ",";
         enclosing: '"';
-    }
-
-    // filter stops by zone_id 1645 as per task
-    block FilterStopsByZone oftype Filter {
-        condition: "zone_id = 1645";
-    }
-
-    // validate stop data as per task
-    block ValidateStopData oftype Filter {
-        conditions: [
-            "stop_name IS NOT NULL AND stop_name != ''",
-            "stop_lat BETWEEN -90 AND 90",
-            "stop_lon BETWEEN -90 AND 90"
-        ];
     }
 
     // select and rename the column headers as per task
