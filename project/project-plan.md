@@ -41,7 +41,7 @@ Provides annual measurements of urban air pollutants, including sulfur dioxide, 
 
 2. **Issue #2: Exploratory Data Analysis (EDA)** [#2][i2]
 
-3. **Issue #5: Report Writing and Recommendations** [#3][i3]
+3. **Issue #3: Report Writing and Recommendations** [#3][i3]
   
 
 [i1]: https://github.com/khharlamova/fau-made/issues/1
