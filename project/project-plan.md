@@ -39,7 +39,7 @@ Provides annual measurements of urban air pollutants, including sulfur dioxide, 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 1. **Issue #1: Data Collection and Preparation** [#1][i1]
 
-2. **Issue #2: Exploratory Data Analysis (EDA)** [#2][i2]
+2. **Issue #2: Exploratory Data Analysis** [#2][i2]
 
 3. **Issue #3: Report Writing and Recommendations** [#3][i3]
   
